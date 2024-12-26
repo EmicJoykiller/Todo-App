@@ -26,13 +26,15 @@ const addOrUpdateTask = () => {
     taskData.unshift(taskObj);
   }
 
-
+  updateTaskContainer();
+  reset();
 };
 
 const updateTaskContainer = () => {
-  taskData.forEach(
-    ({ id, title, date, description }) => {
-        tasksContainer.innerHTML += `
+  tasksContainer.innerHTML = "";
+
+  taskData.forEach(({ id, title, date, description }) => {
+    tasksContainer.innerHTML += `
         <div class="task" id="${id}">
           <p><strong>Title:</strong> ${title}</p>
           <p><strong>Date:</strong> ${date}</p>
@@ -40,9 +42,8 @@ const updateTaskContainer = () => {
           <button type="button" class="btn">Edit</button>
           <button type="button" class="btn">Delete</button>
         </div>
-      `
-    } 
-  );
+      `;
+  });
 };
 
 const reset = () => {
@@ -51,14 +52,15 @@ const reset = () => {
   descriptionInput.value = "";
   taskForm.classList.toggle("hidden");
   currentTask = {};
-}
+};
 
 openTaskFormBtn.addEventListener("click", () =>
   taskForm.classList.toggle("hidden")
 );
 
 closeTaskFormBtn.addEventListener("click", () => {
-  const formInputsContainValues = titleInput.value || dateInput.value || descriptionInput.value;
+  const formInputsContainValues =
+    titleInput.value || dateInput.value || descriptionInput.value;
   if (formInputsContainValues) {
     confirmCloseDialog.showModal();
   } else {
@@ -70,11 +72,10 @@ cancelBtn.addEventListener("click", () => confirmCloseDialog.close());
 
 discardBtn.addEventListener("click", () => {
   confirmCloseDialog.close();
-  reset()
+  reset();
 });
 
 taskForm.addEventListener("submit", (e) => {
   e.preventDefault();
-
-  reset()
+  addOrUpdateTask();
 });
